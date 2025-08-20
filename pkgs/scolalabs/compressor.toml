@@ -1,0 +1,36 @@
+name = "Compressor"
+revision = 1
+website = "https://socalabs.com/effects/compressor/"
+vendor = "SocaLabs"
+categories = ["COMPRESSOR"]
+description = """
+    Mono or Stereo Compressor
+    Soft knee
+    Cool visualization
+    Windows VST/VST3 32/64
+    Mac VST/VST3/AU 64
+"""
+
+[[instance]]
+format = "VST2"
+platform = "WINDOWS"
+arch = "X86_64"
+
+[[instance.method.SimpleDownloadAndCopy.downloads]]
+url = "https://socalabs.com/files/get.php?id=Compressor_Win.zip"
+extract = "Zip"
+copy_actions = [
+    ["%dl%/vst/Compressor.dll", "%vst2%/socalabs/Compressor.dll"],
+]
+
+[[instance]]
+format = "VST3"
+platform = "WINDOWS"
+arch = "X86_64"
+
+[[instance.method.SimpleDownloadAndCopy.downloads]]
+url = "https://socalabs.com/files/get.php?id=Compressor_Win.zip"
+extract = "Zip"
+copy_actions = [
+    ["%dl%/vst3/Compressor.vst3", "%vst3%/socalabs/Compressor.vst3"],
+]

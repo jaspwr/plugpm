@@ -1,0 +1,37 @@
+name = "Delay"
+revision = 1
+website = "https://socalabs.com/effects/delay/"
+vendor = "SocaLabs"
+categories = ["DELAY"]
+description = """
+    Stereo delay
+    Time or tempo sync
+    Feedback and cross channel feedback
+    120 seconds maximum delay
+    Windows VST/VST3 32/64
+    Mac VST/VST3/AU 64
+"""
+
+[[instance]]
+format = "VST2"
+platform = "WINDOWS"
+arch = "X86_64"
+
+[[instance.method.SimpleDownloadAndCopy.downloads]]
+url = "https://socalabs.com/files/get.php?id=Delay_Win.zip"
+extract = "Zip"
+copy_actions = [
+    ["%dl%/vst/Delay.dll", "%vst2%/socalabs/Delay.dll"],
+]
+
+[[instance]]
+format = "VST3"
+platform = "WINDOWS"
+arch = "X86_64"
+
+[[instance.method.SimpleDownloadAndCopy.downloads]]
+url = "https://socalabs.com/files/get.php?id=Delay_Win.zip"
+extract = "Zip"
+copy_actions = [
+    ["%dl%/vst3/Delay.vst3", "%vst3%/socalabs/Delay.vst3"],
+]

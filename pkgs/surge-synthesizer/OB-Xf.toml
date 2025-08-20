@@ -1,0 +1,20 @@
+name = "OB-Xf"
+revision = 1
+website = "https://github.com/surge-synthesizer/OB-Xf"
+vendor = "SocaLabs"
+categories = ["SYNTH"]
+description = """
+OB-Xf is a continuation and modernatization of the last open source release of OB-Xd by 2DaT and later discoDSP. It is inspired by the venerable Oberheim OB-X. 
+"""
+
+[[instance]]
+format = "VST3"
+platform = "WINDOWS"
+arch = "X86_64"
+
+[[instance.method.SimpleDownloadAndCopy.downloads]]
+url = "https://github.com/surge-synthesizer/OB-Xf/releases/download/Nightly/obxf-2025-08-11-163e918-Windows.zip"
+extract = "Zip"
+copy_actions = [
+    ["%dl%/obxf_products/OB-Xf.vst3", "%vst3%/surge-synthesizer/OB-Xf.vst3"],
+]
