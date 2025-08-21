@@ -156,7 +156,7 @@ impl Plugin {
                 DistributionMethod::SimpleDownloadAndCopy { downloads } => {
                     for dl in downloads {
                         if let Err(e) = dl.install(&inst.format, &mut ctx) {
-                            eprintln!("[!] {}", e);
+                            eprintln!("[!] {} {}", inst.format, e);
                         }
                     }
                 }
@@ -174,6 +174,21 @@ impl Plugin {
     }
 }
 
+fn fetch(name: &str) -> Result<Plugin> {
+    let url = format!(
+        "https://raw.githubusercontent.com/jaspwr/plugpm/refs/heads/main/pkgs/{}.toml",
+        name
+    );
+    let mut call = ureq::get(url).call().unwrap();
+    let body = call.body_mut().read_to_string().unwrap();
+    let plug: std::result::Result<Plugin, _> = toml::from_str(&body);
+    if let Err(ref e) = plug {
+        println!("{}", e);
+    }
+    let plug = plug.unwrap();
+    Ok(plug)
+}
+
 fn main() {
     let args = std::env::args().collect::<Vec<_>>();
 
@@ -184,15 +199,7 @@ fn main() {
 
     if args[1] == "install" {
         for plug in &args[2..] {
-            let t = std::fs::read_to_string(plug).unwrap();
-            let plug: std::result::Result<Plugin, _> = toml::from_str(&t);
-
-            if let Err(ref e) = plug {
-                println!("{}", e);
-            }
-
-            let plug = plug.unwrap();
-
+            let plug = fetch(&plug).unwrap();
             plug.install(None).unwrap();
         }
     } else {
