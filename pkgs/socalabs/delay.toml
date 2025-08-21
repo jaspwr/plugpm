@@ -21,7 +21,7 @@ arch = "X86_64"
 url = "https://socalabs.com/files/get.php?id=Delay_Win.zip"
 extract = "Zip"
 copy_actions = [
-    ["%dl%/vst/Delay.dll", "%vst2%/socalabs/Delay.dll"],
+    ["%dl%/vst/Delay.dll", "%plugs%/socalabs/Delay.dll"],
 ]
 
 [[instance]]
@@ -33,5 +33,5 @@ arch = "X86_64"
 url = "https://socalabs.com/files/get.php?id=Delay_Win.zip"
 extract = "Zip"
 copy_actions = [
-    ["%dl%/vst3/Delay.vst3", "%vst3%/socalabs/Delay.vst3"],
+    ["%dl%/vst3/Delay.vst3", "%plugs%/socalabs/Delay.vst3"],
 ]

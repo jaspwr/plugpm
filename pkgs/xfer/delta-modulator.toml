@@ -16,7 +16,7 @@ arch = "X86_64"
 url = "https://xferrecords.com/product_downloads/27/freeware"
 extract = "Zip"
 copy_actions = [
-    ["%dl%/DeltaModulator.dll", "%vst2%/xfer/DeltaModulator.dll"],
+    ["%dl%/DeltaModulator.dll", "%plugs%/xfer/DeltaModulator.dll"],
 ]
 
 [[instance]]
@@ -28,6 +28,6 @@ arch = "X86"
 url = "https://xferrecords.com/product_downloads/27/freeware"
 extract = "Zip"
 copy_actions = [
-    ["%dl%/DeltaModulator_x64.dll", "%vst2%/xfer/DeltaModulator_x64.dll"],
+    ["%dl%/DeltaModulator_x64.dll", "%plugs%/xfer/DeltaModulator_x64.dll"],
 ]
 

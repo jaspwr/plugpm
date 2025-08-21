@@ -1,0 +1,45 @@
+name = "Just a Sample"
+version = "1.02"
+revision = 1
+website = "https://bobona.github.io/just-a-sample/"
+vendor = "BOBONA"
+categories = ["SAMPLER"]
+description = """
+Just a Sample is a modern, open-source audio sampler 
+"""
+
+[[instance]]
+format = "VST3"
+platform = "WINDOWS"
+arch = "X86_64"
+
+[[instance.method.SimpleDownloadAndCopy.downloads]]
+url = "https://github.com/BOBONA/Just-a-Sample/releases/download/v1.02/Win.VST3.zip"
+extract = "Zip"
+copy_actions = [
+    ["%dl%/Just a Sample.vst3", "%plugs%/bobona/Just a Sample.vst3"],
+]
+
+[[instance]]
+format = "VST3"
+platform = "LINUX"
+arch = "X86_64"
+
+[[instance.method.SimpleDownloadAndCopy.downloads]]
+url = "https://github.com/BOBONA/Just-a-Sample/releases/download/v1.02/Linux.VST3.zip"
+extract = "Zip"
+copy_actions = [
+    ["%dl%/Just a Sample.vst3", "%plugs%/bobona/Just a Sample.vst3"],
+]
+
+[[instance]]
+format = "VST3"
+platform = "MACOS"
+arch = "X86_64"
+
+[[instance.method.SimpleDownloadAndCopy.downloads]]
+url = "https://github.com/BOBONA/Just-a-Sample/releases/download/v1.02/Mac.VST3.zip"
+extract = "Zip"
+copy_actions = [
+    ["%dl%/Just a Sample.vst3", "%plugs%/bobona/Just a Sample.vst3"],
+]

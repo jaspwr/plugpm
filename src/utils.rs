@@ -20,3 +20,10 @@ pub fn copy_dir<P: AsRef<Path>>(from: P, to: P) -> std::io::Result<()> {
 
     Ok(())
 }
+
+pub fn slugify(s: &str) -> String {
+    s.chars()
+        .filter(|c| c.is_ascii_alphabetic())
+        .map(|c| c.to_ascii_lowercase())
+        .collect()
+}

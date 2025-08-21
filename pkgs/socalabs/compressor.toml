@@ -20,7 +20,7 @@ arch = "X86_64"
 url = "https://socalabs.com/files/get.php?id=Compressor_Win.zip"
 extract = "Zip"
 copy_actions = [
-    ["%dl%/vst/Compressor.dll", "%vst2%/socalabs/Compressor.dll"],
+    ["%dl%/vst/Compressor.dll", "%plugs%/socalabs/Compressor.dll"],
 ]
 
 [[instance]]
@@ -32,5 +32,5 @@ arch = "X86_64"
 url = "https://socalabs.com/files/get.php?id=Compressor_Win.zip"
 extract = "Zip"
 copy_actions = [
-    ["%dl%/vst3/Compressor.vst3", "%vst3%/socalabs/Compressor.vst3"],
+    ["%dl%/vst3/Compressor.vst3", "%plugs%/socalabs/Compressor.vst3"],
 ]

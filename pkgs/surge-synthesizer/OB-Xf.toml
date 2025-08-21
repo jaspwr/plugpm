@@ -16,7 +16,7 @@ arch = "X86_64"
 url = "https://github.com/surge-synthesizer/OB-Xf/releases/download/Nightly/obxf-2025-08-11-163e918-Windows.zip"
 extract = "Zip"
 copy_actions = [
-    ["%dl%/obxf_products/OB-Xf.vst3", "%vst3%/surge-synthesizer/OB-Xf.vst3"],
+    ["%dl%/obxf_products/OB-Xf.vst3", "%plugs%/surge-synthesizer/OB-Xf.vst3"],
 ]
 
 [[instance]]
@@ -28,5 +28,5 @@ arch = "X86_64"
 url = "https://github.com/surge-synthesizer/OB-Xf/releases/download/Nightly/obxf-2025-08-11-163e918-Windows.zip"
 extract = "Zip"
 copy_actions = [
-    ["%dl%/obxf_products/OB-Xf.clap", "%clap%/surge-synthesizer/OB-Xf.clap"],
+    ["%dl%/obxf_products/OB-Xf.clap", "%plugs%/surge-synthesizer/OB-Xf.clap"],
 ]

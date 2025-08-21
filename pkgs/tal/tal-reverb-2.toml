@@ -1,0 +1,34 @@
+name = "TAL-Reverb-2"
+version = "2.3.0"
+revision = 1
+website = "https://tal-software.com/products/tal-reverb"
+vendor = "TAL"
+categories = ["REVERB"]
+description = """
+TAL Reverb-II
+is a super diffuse and lush reverb effect with a fast build up time. Ideal for ambient reverb sounds.
+"""
+
+[[instance]]
+format = "VST3"
+platform = "WINDOWS"
+arch = "X86_64"
+
+[[instance.method.SimpleDownloadAndCopy.downloads]]
+url = "https://tal-software.com//downloads/plugins/install_TAL-Reverb-2.zip"
+extract = "Zip"
+copy_actions = [
+    ["%dl%/TAL-Reverb-2.vst3", "%plugs%/tal/TAL-Reverb-2.vst3"],
+]
+
+[[instance]]
+format = "VST2"
+platform = "WINDOWS"
+arch = "X86_64"
+
+[[instance.method.SimpleDownloadAndCopy.downloads]]
+url = "https://tal-software.com//downloads/plugins/install_TAL-Reverb-2.zip"
+extract = "Zip"
+copy_actions = [
+    ["%dl%/TAL-Reverb-2-64.dll", "%plugs%/tal/TAL-Reverb-2-64.dll"],
+]

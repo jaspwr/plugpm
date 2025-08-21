@@ -1,4 +1,4 @@
-use std::{io::Cursor, path::PathBuf, str::FromStr};
+use std::{collections::HashMap, io::Cursor, path::PathBuf, str::FromStr};
 
 use serde_derive::{Deserialize, Serialize};
 
@@ -13,9 +13,13 @@ use utils::*;
 #[derive(Serialize, Deserialize)]
 pub struct Plugin {
     pub name: String,
+    #[serde(default)]
+    pub version: String,
     pub revision: usize,
     pub website: String,
     pub vendor: String,
+    #[serde(default)]
+    pub licence: String,
     pub categories: Vec<String>,
     pub description: Option<String>,
     #[serde(alias = "instance")]
@@ -54,62 +58,82 @@ pub enum ExtractMethod {
     Zip,
 }
 
+#[derive(Default)]
+pub struct Context {
+    /// URL -> Path
+    downloaded: HashMap<String, String>,
+}
+
 impl DownloadAndCopyFile {
-    pub fn install(&self) -> Result<()> {
-        let path = "temp";
+    pub fn install(&self, fmt: &str, ctx: &mut Context) -> Result<()> {
+        // Check for existing download
+        let path = match ctx.downloaded.get(&self.url) {
+            Some(p) => p.clone(),
+            None => {
+                let path = slugify(&self.url);
+                self.download(&path)?;
+                ctx.downloaded.insert(self.url.clone(), path.clone());
+                path
+            }
+        };
+
+        for CopyAction(src, dst) in &self.copy_actions {
+            let src = process_path(src, &path, fmt)?;
+            let dst = process_path(dst, &path, fmt)?;
+
+            println!("Copying {} -> {}", src.display(), dst.display());
+
+            if let Some(p) = dst.parent() {
+                if !p.exists() {
+                    std::fs::create_dir_all(p).map_err(|e| Err::Misc(e.to_string()))?;
+                }
+            }
+
+            if src.is_dir() {
+                copy_dir(src, dst).map_err(|e| Err::Misc(e.to_string()))?;
+            } else {
+                std::fs::copy(src, dst).map_err(|e| Err::Misc(e.to_string()))?;
+            }
+        }
+
+        Ok(())
+    }
+
+    fn download(&self, path: &str) -> Result<()> {
+        let mut call = ureq::get(&self.url).call().unwrap();
+        let body = call.body_mut().read_to_vec().unwrap();
 
         assert!(!PathBuf::from(path).exists());
 
-        let res = (|| -> Result<()> {
-            let mut call = ureq::get(&self.url).call().unwrap();
-            let body = call.body_mut().read_to_vec().unwrap();
-
-            match self.extract {
-                ExtractMethod::None => {
-                    std::fs::write(path, body).unwrap();
-                }
-                ExtractMethod::Zip => {
-                    let c = Cursor::new(body);
-                    let mut archive = zip::ZipArchive::new(c).unwrap();
-                    archive.extract(path).unwrap();
-                }
+        match self.extract {
+            ExtractMethod::None => {
+                std::fs::write(path, body).unwrap();
             }
-
-            for CopyAction(src, dst) in &self.copy_actions {
-                let src = process_path(src, path)?;
-                let dst = process_path(dst, path)?;
-
-                println!("Copying {} -> {}", src.display(), dst.display());
-
-                if let Some(p) = dst.parent() {
-                    if !p.exists() {
-                        std::fs::create_dir_all(p).map_err(|e| Err::Misc(e.to_string()))?;
-                    }
-                }
-
-                if src.is_dir() {
-                    copy_dir(src, dst).map_err(|e| Err::Misc(e.to_string()))?;
-                } else {
-                    std::fs::copy(src, dst).map_err(|e| Err::Misc(e.to_string()))?;
-                }
+            ExtractMethod::Zip => {
+                let c = Cursor::new(body);
+                let mut archive = zip::ZipArchive::new(c).unwrap();
+                archive.extract(path).unwrap();
             }
+        }
 
-            Ok(())
-        })();
-
-        std::fs::remove_dir_all(path).unwrap();
-
-        res
+        Ok(())
     }
 }
 
-fn process_path(p: &str, dl: &str) -> Result<PathBuf> {
-    let p = p
-        .to_string()
-        .replace("%dl%", dl)
-        .replace("%vst2%", VST2_INSTALL_PATH)
-        .replace("%vst3%", VST3_INSTALL_PATH)
-        .replace("%clap%", CLAP_INSTALL_PATH);
+fn process_path(p: &str, dl: &str, fmt: &str) -> Result<PathBuf> {
+    let p = p.to_string().replace("%dl%", dl).replace(
+        "%plugs%",
+        match fmt {
+            FORMAT_VST2 => VST2_INSTALL_PATH,
+            FORMAT_VST3 => VST3_INSTALL_PATH,
+            FORMAT_CLAP => CLAP_INSTALL_PATH,
+            _ => {
+                return Err(Err::Misc(
+                    "No install path known for this format".to_string(),
+                ));
+            }
+        },
+    );
 
     PathBuf::from_str(&p).map_err(|e| Err::Misc(e.to_string()))
 }
@@ -125,17 +149,25 @@ impl Plugin {
             eprintln!("No instances of this plugin are avaible for this platform");
         }
 
+        let mut ctx = Context::default();
+
         for inst in insts {
             match &inst.method {
                 DistributionMethod::SimpleDownloadAndCopy { downloads } => {
                     for dl in downloads {
-                        dl.install()?;
+                        if let Err(e) = dl.install(&inst.format, &mut ctx) {
+                            eprintln!("[!] {}", e);
+                        }
                     }
                 }
                 DistributionMethod::BehindNewsletter { url } => todo!(),
                 DistributionMethod::ProvidedInstaller { url } => todo!(),
                 DistributionMethod::BehindPayWhatYouWant { url } => todo!(),
             }
+        }
+
+        for (_, path) in ctx.downloaded {
+            std::fs::remove_dir_all(path).unwrap();
         }
 
         Ok(())
