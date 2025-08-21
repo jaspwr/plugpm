@@ -41,5 +41,5 @@ arch = "X86_64"
 url = "https://github.com/BOBONA/Just-a-Sample/releases/download/v1.02/Mac.VST3.zip"
 extract = "Zip"
 copy_actions = [
-    ["%dl%/Just a Sample.vst3", "%plugs%/bobona/Just a Sample.vst3"],
+    ["%dl%/JustASample.vst3", "%plugs%/bobona/JustASample.vst3"],
 ]
