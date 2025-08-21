@@ -1,0 +1,33 @@
+name = "KLYP"
+revision = 1
+website = "https://voidstaraudio.com/klyp/"
+vendor = "Voidstar Audio"
+categories = ["CLIPPER"]
+description = """
+KLYP is a soft clipper.
+
+It comes with interactive visualizers; The clipping curve doubles as a peak meter and sits next to the oscilloscope. The red threshold line shows where audio starts to audibly clip, and at what point the clipper is fully saturated. You can move this line to change the threshold, or scroll on it to adjust the softness.
+
+KLYP allows for up to 8x oversampling, and it also offers Antiderivative Antialiasing. Turn it on to get even better antialiasing at one sample of latency.
+
+Get KLYP for MacOS, Windows, and Linux as a VST3 Plugin or CLAP.
+
+VST is a trademark of Steinberg Media Technologies GmbH, registered in Europe and other countries.
+"""
+
+[[instance]]
+format = "VST3"
+platform = "*"
+arch = "X86_64"
+
+[[instance.method.BehindPayWhatYouWant]]
+url = "https://store.voidstaraudio.com/"
+
+[[instance]]
+format = "CLAP"
+platform = "*"
+arch = "X86_64"
+
+[[instance.method.BehindPayWhatYouWant]]
+url = "https://store.voidstaraudio.com/"
+

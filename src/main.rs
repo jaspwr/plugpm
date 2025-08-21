@@ -34,6 +34,7 @@ pub struct Instance {
 pub enum DistributionMethod {
     SimpleDownloadAndCopy { downloads: Vec<DownloadAndCopyFile> },
     BehindNewsletter { url: String },
+    BehindPayWhatYouWant { url: String },
     ProvidedInstaller { url: String },
 }
 
@@ -54,8 +55,8 @@ pub enum ExtractMethod {
 }
 
 impl DownloadAndCopyFile {
-    pub fn download(&self) -> Result<()> {
-        let path = "delay";
+    pub fn install(&self) -> Result<()> {
+        let path = "temp";
 
         assert!(!PathBuf::from(path).exists());
 
@@ -114,20 +115,26 @@ fn process_path(p: &str, dl: &str) -> Result<PathBuf> {
 }
 
 impl Plugin {
-    pub fn install(&self, progress_callback: Option<Box<dyn Fn(f32)>>) -> Result<()> {
-        for inst in &self.instances {
-            if inst.platform != THIS_PLATFORM {
-                continue;
-            }
+    pub fn install(&self, _progress_callback: Option<Box<dyn Fn(f32)>>) -> Result<()> {
+        let insts = self
+            .instances
+            .iter()
+            .filter(|i| i.platform == THIS_PLATFORM);
 
+        if insts.clone().count() == 0 {
+            eprintln!("No instances of this plugin are avaible for this platform");
+        }
+
+        for inst in insts {
             match &inst.method {
                 DistributionMethod::SimpleDownloadAndCopy { downloads } => {
                     for dl in downloads {
-                        dl.download()?;
+                        dl.install()?;
                     }
                 }
                 DistributionMethod::BehindNewsletter { url } => todo!(),
                 DistributionMethod::ProvidedInstaller { url } => todo!(),
+                DistributionMethod::BehindPayWhatYouWant { url } => todo!(),
             }
         }
 

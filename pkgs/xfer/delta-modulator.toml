@@ -1,0 +1,33 @@
+name = "Delta Modulator"
+revision = 1
+website = "https://xferrecords.com/freeware"
+vendor = "Xfer"
+categories = []
+description = """
+Delta Modulator (VST) for Windows 
+"""
+
+[[instance]]
+format = "VST2"
+platform = "WINDOWS"
+arch = "X86_64"
+
+[[instance.method.SimpleDownloadAndCopy.downloads]]
+url = "https://xferrecords.com/product_downloads/27/freeware"
+extract = "Zip"
+copy_actions = [
+    ["%dl%/DeltaModulator.dll", "%vst2%/xfer/DeltaModulator.dll"],
+]
+
+[[instance]]
+format = "VST2"
+platform = "WINDOWS"
+arch = "X86"
+
+[[instance.method.SimpleDownloadAndCopy.downloads]]
+url = "https://xferrecords.com/product_downloads/27/freeware"
+extract = "Zip"
+copy_actions = [
+    ["%dl%/DeltaModulator_x64.dll", "%vst2%/xfer/DeltaModulator_x64.dll"],
+]
+
